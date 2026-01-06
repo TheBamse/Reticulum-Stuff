@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
-FULLY PROTECTED MICRON TEMPLATE
+NomadNet Protected Micron Page Guard
 
-- Identity-based `.allowed` guard
-- Unauthorized users see only a message; no other output is executed
-- Authorized users can:
-    1. Type simple static text
-    2. Paste full Python/Micron pages (like meshchat.mu)
+- Uses `.allowed` file to control access
+- Grabs the connecting client identity exactly as `meshchat.mu` does
+- Stops execution for unauthorized users
+- Protected section below remains exactly as-is
 """
 
 import sys
@@ -33,9 +32,12 @@ if allowed_file.exists():
     )
 
 # ---------------------------
-# 2. Get remote identity
+# 2. Get runtime identity (as meshchat.mu)
 # ---------------------------
-remote_identity = os.getenv("remote_identity", "").strip().lower()
+try:
+    remote_identity = os.environ["remote_identity"].strip().lower()
+except KeyError:
+    remote_identity = None
 
 # ---------------------------
 # 3. Authorization check
@@ -47,28 +49,14 @@ if not remote_identity or remote_identity not in allowed_idents:
 
 You are not authorized to view this page.
 """)
-else:
-    # ---------------------------
-    # 4. PROTECTED CONTENT BELOW
-    # Everything below this line executes ONLY for allowed identities
-    # ---------------------------
+    raise SystemExit  # Stop execution
 
-    # ---------------------------
-    # Option 1: Simple static text output
-    # ---------------------------
-    # Uncomment or add lines like these:
-    # out("# Authorized access")
-    # out("You are authorized to view this page.")
+# ---------------------------
+# 4. PROTECTED SECTION BELOW
+# Paste your original meshchat.mu or any other page here
+# This includes TEMPLATE_MAIN, system calls, comments, etc.
+# ---------------------------
 
-    # ---------------------------
-    # Option 2: Full Python/Micron page
-    # ---------------------------
-    # Paste any raw page here, for example meshchat.mu
-    # Example:
-    # def recover_input(name):
-    #     ...
-    # tpl = TEMPLATE_MAIN
-    # tpl = tpl.replace("{self}", FILE)
-    # tpl = tpl.replace("{date_time}", time.strftime("%Y-%m-%d %H:%M:%S"))
-    # tpl = tpl.replace("{entrys}", subprocess.getoutput("/home/bamse/.local/bin/rnstatus").strip())
-    # print(tpl)
+out("# Authorized access")
+out("You are authorized to view this page.")
+
