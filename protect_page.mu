@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""
-NomadNet Protected Micron Page Guard
-
-- Uses `.allowed` file to control access
-- Grabs the connecting client identity exactly as `meshchat.mu` does
-- Stops execution for unauthorized users
-- Protected section below remains exactly as-is
-"""
+#
+##########################################################################
+# NomadNet Protected Micron Page Guard
+#
+# - Uses `.allowed` file to control access
+# - Grabs the connecting client identity exactly as `meshchat.mu` does
+# - Stops execution for unauthorized users
+# - Protected section below remains exactly as-is
+##########################################################################
 
 import sys
 import os
