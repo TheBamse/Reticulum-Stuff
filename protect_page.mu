@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-
 """
-PROTECTED MICRON TEMPLATE
+FULLY PROTECTED MICRON TEMPLATE
 
-- Place this at the top of any Micron/Python page
-- Creates an identity-based `.allowed` guard
-- Everything below the `# --- PROTECTED CONTENT BELOW ---` line
-  executes only if the connecting client is allowed
-- Unauthorized visitors see a message and the page stops executing
+- Identity-based `.allowed` guard
+- Unauthorized users see only a message; no other output is executed
+- Authorized users can:
+    1. Type simple static text
+    2. Paste full Python/Micron pages (like meshchat.mu)
 """
 
 import sys
@@ -48,27 +47,28 @@ if not remote_identity or remote_identity not in allowed_idents:
 
 You are not authorized to view this page.
 """)
-    # Stop execution — do NOT use sys.exit()
-    # The rest of the page is ignored for unauthorized users
 else:
-    pass  # Authorized users continue executing below
+    # ---------------------------
+    # 4. PROTECTED CONTENT BELOW
+    # Everything below this line executes ONLY for allowed identities
+    # ---------------------------
 
-# ---------------------------
-# 4. PROTECTED CONTENT BELOW
-# ---------------------------
-# Everything below this line executes only for allowed identities
-# You can:
-#   - Paste a full Python/Micron page (e.g., meshchat.mu)
-#   - Or write simple static Micron output using out()
-# Example static text:
-# out("# Authorized access")
-# out("You are authorized to view this page.")
-#
-# Example full page:
-# def recover_input(name):
-#     ...
-# paste any existing page code here
+    # ---------------------------
+    # Option 1: Simple static text output
+    # ---------------------------
+    # Uncomment or add lines like these:
+    # out("# Authorized access")
+    # out("You are authorized to view this page.")
 
-
-out("# Authorized access")
-out("You are authorized to view this page.")
+    # ---------------------------
+    # Option 2: Full Python/Micron page
+    # ---------------------------
+    # Paste any raw page here, for example meshchat.mu
+    # Example:
+    # def recover_input(name):
+    #     ...
+    # tpl = TEMPLATE_MAIN
+    # tpl = tpl.replace("{self}", FILE)
+    # tpl = tpl.replace("{date_time}", time.strftime("%Y-%m-%d %H:%M:%S"))
+    # tpl = tpl.replace("{entrys}", subprocess.getoutput("/home/bamse/.local/bin/rnstatus").strip())
+    # print(tpl)
